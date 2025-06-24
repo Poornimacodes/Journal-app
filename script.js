@@ -31,19 +31,12 @@ function loadEntries(filteredEntries = null) {
   });
 }
 
-function searchEntries() {
-  const keyword = document.getElementById("searchKeyword").value.toLowerCase();
-  const date = document.getElementById("searchDate").value; // format: yyyy-mm-dd
 
   let entries = JSON.parse(localStorage.getItem("journalEntries")) || [];
 
   const filtered = entries.filter((entry) => {
     const textMatch = keyword ? entry.text.toLowerCase().includes(keyword) : true;
-
-    const entryDate = new Date(entry.time).toISOString().slice(0, 10); // yyyy-mm-dd
-    const dateMatch = date ? entryDate === date : true;
-
-    return textMatch && dateMatch;
+    return textMatch;
   });
 
   loadEntries(filtered);
