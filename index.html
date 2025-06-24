@@ -11,6 +11,9 @@
     <h1>🕰️ TimeCapsule Journal</h1>
     <textarea id="entry" placeholder="Write your thoughts here..."></textarea>
     <button onclick="saveEntry()">Save Entry</button>
+    <h2>🔎 Search Entries</h2>
+<input type="text" id="searchKeyword" placeholder="Search by keyword..." oninput="searchEntries()" />
+<input type="date" id="searchDate" onchange="searchEntries()" />
 
     <h2>📚 Past Entries</h2>
     <ul id="entriesList"></ul>
