@@ -14,16 +14,45 @@ function saveEntry() {
   loadEntries();
 }
 
-function loadEntries() {
-  const entries = JSON.parse(localStorage.getItem("journalEntries")) || [];
+function loadEntries(filteredEntries = null) {
+  const entries = filteredEntries || JSON.parse(localStorage.getItem("journalEntries")) || [];
   const entriesList = document.getElementById("entriesList");
   entriesList.innerHTML = "";
+
+  if (entries.length === 0) {
+    entriesList.innerHTML = "<li>No matching entries found.</li>";
+    return;
+  }
 
   entries.forEach((entry) => {
     const li = document.createElement("li");
     li.innerHTML = `<strong>${entry.time}</strong><br>${entry.text}<hr>`;
     entriesList.appendChild(li);
   });
+}
+
+function searchEntries() {
+  const keyword = document.getElementById("searchKeyword").value.toLowerCase();
+  const date = document.getElementById("searchDate").value; // format: yyyy-mm-dd
+
+  let entries = JSON.parse(localStorage.getItem("journalEntries")) || [];
+
+  const filtered = entries.filter((entry) => {
+    const textMatch = keyword ? entry.text.toLowerCase().includes(keyword) : true;
+
+    const entryDate = new Date(entry.time).toISOString().slice(0, 10); // yyyy-mm-dd
+    const dateMatch = date ? entryDate === date : true;
+
+    return textMatch && dateMatch;
+  });
+
+  loadEntries(filtered);
+}
+
+function clearSearch() {
+  document.getElementById("searchKeyword").value = "";
+  document.getElementById("searchDate").value = "";
+  loadEntries(); // reload all entries
 }
 
 window.onload = loadEntries;
